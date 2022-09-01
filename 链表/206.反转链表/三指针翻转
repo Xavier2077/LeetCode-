@@ -5,10 +5,17 @@ public:
         {
             return head;
         }
-        ListNode* pre = head;
-        ListNode* tail = reverseList(head->next);
-        pre->next->next = head;
-        pre->next = NULL;
-        return tail;
+        ListNode* slow = NULL;
+        ListNode* now = head;
+        ListNode* fast = head->next;
+        head->next = NULL;
+        while(fast)
+        {
+            slow = now;
+            now = fast;
+            fast = fast->next;
+            now->next = slow;
+        }
+        return now;
     }
 };
