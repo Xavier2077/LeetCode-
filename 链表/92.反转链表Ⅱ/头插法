@@ -1,0 +1,27 @@
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if(!head || !head->next)
+        {
+            return head;
+        }
+        ListNode* new_head = new ListNode;
+        new_head->next = head;
+        ListNode* pre = new_head;
+        for(int i = 0;i < left -1;++i)
+        {
+            pre = pre->next;
+        }
+        ListNode* cur = pre->next;
+        ListNode* next = cur->next;
+        int sum = right - left + 1;
+        while(--sum)
+        {
+            next=next->next;
+            cur->next->next = pre->next;
+            pre->next = cur->next;
+            cur->next = next; 
+        }
+        return new_head->next;
+    }
+};
