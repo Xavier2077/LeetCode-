@@ -1,0 +1,45 @@
+class Solution {
+public:
+   void reverseLinkedList(ListNode *head) {
+            if(!head || !head->next)
+            {
+                return;
+            }
+            ListNode* pre = head;
+            reverseLinkedList(head->next);
+            pre->next->next = head;
+            pre->next = NULL;
+        }
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        if(!head || !head->next)
+        {
+            return head;
+        }
+        ListNode* new_head = new ListNode;
+        new_head->next = head;
+        ListNode* pre = new_head;
+        ListNode* l_node = NULL;
+        int sum = 0;
+
+        for (int i = 0; i < left - 1; i++) {
+            pre = pre->next;
+        }
+        ListNode* r_node = pre;
+        for (int i = 0; i < right - left + 1; i++) {
+            r_node = r_node->next;
+        }
+        //截取链表
+        l_node = pre->next;
+        ListNode* tail =  r_node->next;
+        //断开连接
+        pre->next = NULL;
+        r_node->next = NULL;
+        reverseLinkedList(l_node);
+        pre->next = r_node;
+        if(tail)
+        {
+            l_node->next = tail;
+        }
+        return new_head->next;
+    }
+};
