@@ -1,0 +1,38 @@
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(!head)
+        {
+            return head;
+        }
+        ListNode* new_head = new ListNode;
+        new_head->next = head;
+        ListNode* big_head = new ListNode;
+        ListNode* big_cur = new ListNode;
+        big_cur = big_head;
+        ListNode* small_head = new ListNode;
+        ListNode* small_cur = new ListNode;
+        small_cur = small_head;
+        ListNode* cur = new_head;
+        ListNode* next = cur->next;
+        while(next)
+        {
+            cur = next;
+            next = next->next;
+            if(cur->val < x)
+            {
+                small_cur->next = cur;
+                small_cur = small_cur->next;
+            }
+            else
+            {
+                big_cur->next = cur;
+                big_cur = big_cur->next;
+
+            }
+                cur->next = nullptr;
+        }
+        small_cur->next = big_head->next;
+        return small_head->next;
+    }
+};
