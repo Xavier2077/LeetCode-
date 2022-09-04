@@ -1,0 +1,45 @@
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head)
+        {
+            return NULL;
+        }
+        Node* cur = head;
+        //插入建立
+        while(cur)
+        {
+            Node* new_node = new Node(cur->val);
+            new_node->random = cur->random;
+            new_node->next = cur->next;
+            cur->next = new_node;    
+            cur = new_node->next;
+        }
+        //复制节点
+        cur = head->next;
+        while(cur)
+        {
+            if(cur->random)
+            {
+                cur->random = cur->random->next;
+            }
+            cur = cur->next;
+            if(cur)
+            {
+                cur = cur->next;
+            }
+        }
+        //分离链表
+        cur = head;
+        Node* new_head = head->next;
+        while(cur)
+        {
+            Node* next = cur->next;
+            cur->next = next->next;
+            if(cur->next)
+            next->next = cur->next->next;
+            cur = cur->next;
+        }
+        return new_head;
+    }
+};
