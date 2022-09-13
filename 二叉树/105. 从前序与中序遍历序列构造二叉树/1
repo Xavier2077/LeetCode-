@@ -1,0 +1,23 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size() == 0) return NULL;
+        int pos = 0;
+        while(inorder[pos] != preorder[0]) ++pos;
+        vector<int> l_pre,l_in,r_pre,r_in;
+        for(int i = 0;i < pos;++i)
+        {
+            l_in.push_back(inorder[i]);
+            l_pre.push_back(preorder[i + 1]);
+        }
+        for(int i = pos + 1;i < preorder.size();++i)
+        {
+            r_pre.push_back(preorder[i]);
+            r_in.push_back(inorder[i]);
+        }
+        TreeNode* root = new TreeNode(preorder[0]);
+        root->left = buildTree(l_pre,l_in);
+        root->right = buildTree(r_pre,r_in);
+        return root;
+    }
+};
