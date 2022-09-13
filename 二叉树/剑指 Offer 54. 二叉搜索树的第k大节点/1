@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int get_nodenum(TreeNode* root)
+    {
+        if(!root) return 0;
+        return get_nodenum(root->left) + get_nodenum(root->right) + 1;
+    }
+    int kthLargest(TreeNode* root, int k) {
+        int r_cnt = get_nodenum(root->right);
+        if(r_cnt >= k) return kthLargest(root->right,k);
+        if(r_cnt + 1 == k) return root->val;
+        return kthLargest(root->left,k - r_cnt -1);
+    }
+};
