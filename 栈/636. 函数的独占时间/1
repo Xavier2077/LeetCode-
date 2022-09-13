@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        vector<int> ans(n);
+        stack<int> ID;
+        for(int i = 0,pre = 0;i < logs.size();++i)
+        {
+            int pos1 = logs[i].find_first_of(":");
+            int pos2 = logs[i].find_last_of(":");
+            string id_str = logs[i].substr(0,pos1);
+            string status = logs[i].substr(pos1 + 1,pos2 - pos1 - 1);
+            string str_time = logs[i].substr(pos2 + 1,logs[i].size());
+            int id_num = atoi(id_str.c_str());
+            int time_stamp = atoi(str_time.c_str());
+            if(status == "start")
+            {
+                if(!ID.empty())
+                {
+                    ans[ID.top()] += time_stamp - pre;
+                }
+                pre = time_stamp;
+                ID.push(id_num);
+            }
+            else
+            {
+                ans[id_num] += time_stamp - pre + 1;
+                pre = time_stamp + 1;
+                ID.pop();
+            }
+        }
+        return ans;
+    }
+};
