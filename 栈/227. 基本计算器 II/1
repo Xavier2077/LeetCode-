@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int level(char ch)
+    {
+        switch(ch)
+        {
+            case '@': return -1;
+            case '-':
+            case '+': return 1;
+            case '/':
+            case '*': return 2;
+        }
+        return 0;
+    }
+    int calc(int a,char ops,int b)
+    {
+        switch(ops)
+        {
+            case '+':
+                return a + b;
+            case '-':
+                return a - b;
+            case '/':
+                return a / b;
+            case '*':
+                return a * b;
+        }
+        return 0;
+    }
+    int calculate(string s) {
+        stack<int> num;
+        stack<char> ops;
+        s += "@";//帮助我们完成计算
+        for(int i = 0,n = 0;i < s.size();++i)
+        {
+            if(s[i] == ' ') continue;
+            if(level(s[i]) == 0)
+            {
+                n =n * 10 + (s[i] - '0');
+                continue;
+            }
+            num.push(n);
+            n = 0;
+            while(!ops.empty() && level(s[i]) <= level(ops.top()))
+            {
+                int b = num.top();
+                num.pop();
+                int a = num.top();
+                num.pop();
+                num.push(calc(a,ops.top(),b));
+                ops.pop();
+            }
+            ops.push(s[i]);
+        }
+        return num.top();
+    }
+};
