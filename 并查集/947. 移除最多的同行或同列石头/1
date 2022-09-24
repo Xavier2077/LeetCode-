@@ -1,0 +1,53 @@
+class Solution {
+public:
+ class UnionSet
+    {
+    public:
+        int n;
+        int* fa;
+        UnionSet(int n)
+        {
+            this->n = n;
+            fa = new int[n + 1];
+            for(int i = 0;i < n;++i)
+            {
+                fa[i] = i;
+            }
+        }
+        int get(int x)
+        {
+            return fa[x] = (fa[x] == x ? x : get(fa[x]));
+        }
+        void merge(int a, int b)
+        {
+            if(get(a) == get(b)) return;
+            fa[get(a)] = get(b);
+            return;
+        }
+    };
+    int removeStones(vector<vector<int>>& stones) {
+        unordered_map<int, int> map_x, map_y;
+        UnionSet u(stones.size());
+        for(int i = 0;i < stones.size();++i)
+        {
+            int x = stones[i][0];
+            int y = stones[i][1];
+            if(map_x.find(x) !=  map_x.end())
+            {
+                u.merge(i, map_x[x]);
+            }
+            if(map_y.find(y) != map_y.end())
+            {
+                u.merge(i, map_y[y]);
+            }
+            map_x[x] = i;
+            map_y[y] = i;
+        }
+        int ans = 0;
+        for(int i = 0;i < stones.size();++i)
+        {
+            if(u.get(i) == i) ++ans; 
+        }
+        return stones.size() - ans;
+    }
+};
