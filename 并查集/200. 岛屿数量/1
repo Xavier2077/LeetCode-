@@ -1,0 +1,31 @@
+class Solution {
+public:
+    class Unionset
+    {
+    public:
+        int* fa;
+        int n;
+        Unionset(int n)
+        {
+            this->n = n;
+            fa = new int[n + 1];
+            for(int i = 0;i < n;++i)
+            {
+                fa[i] = i;
+            }
+        }
+        int get(int x)
+        {
+            return fa[x] = (fa[x] == x ? x : get(fa[x]));
+        }
+        void merge(int a, int b)
+        {
+            fa[get(a)] = get(b);
+            return;
+        }
+    };
+    #define ind(i, j) ((i) * m + (j))
+    int numIslands(vector<vector<char>>& grid) {
+
+    }
+};
