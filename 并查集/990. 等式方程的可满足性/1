@@ -1,0 +1,45 @@
+class Solution {
+public:
+    class UnionSet
+    {
+    public:
+        int n;
+        int* fa;
+        UnionSet(int n)
+        {
+            this->n = n;
+            fa = new int[n + 1];
+            for(int i = 0;i < n;++i)
+            {
+                fa[i] = i;
+            }         
+        }
+        int get(int x)
+        {
+            return fa[x] = (fa[x] == x ? x : get(fa[x]));
+        }
+        void merge(int a, int b)
+        {
+            fa[get(a)] = get(b);
+            return;
+        }
+    };
+    bool equationsPossible(vector<string>& equations) {
+        UnionSet u(26);
+        for(auto x : equations)
+        {
+            if(x[1] == '!') continue;
+            int a = x[0] - 'a';
+            int b = x[3] - 'a';
+            u.merge(a, b);
+        }
+        for(auto x : equations)
+        {
+            if(x[1] == '=') continue;
+            int a = x[0] - 'a';
+            int b = x[3] - 'a';
+            if(u.get(a) == u.get(b)) return false;
+        }
+        return true;
+    }
+};
