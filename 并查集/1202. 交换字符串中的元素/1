@@ -1,0 +1,48 @@
+class Solution {
+public:
+    class UnionSet
+    {
+    public:
+        int* fa;
+        int n;
+        UnionSet(int n)
+        {
+            this->n = n;
+            fa = new int[n + 1];
+            for(int i = 0;i < n;++i)
+            {
+                fa[i] = i;
+            }
+        }
+        int get(int x)
+        {
+            return fa[x] = (fa[x] == x ? x : get(fa[x]));
+        }
+        void merge(int a, int b)
+        {
+            fa[get(a)] = get(b);
+            return;
+        }
+    };
+    string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) {
+        UnionSet u(s.size());
+        priority_queue<char, vector<char>, greater<char>> h[s.size()];
+        string ans;
+        for(auto x : pairs)
+        {
+            int one = x[0];
+            int two = x[1];
+            u.merge(one, two);
+        }
+        for(int i = 0;i < s.size();++i)
+        {
+            h[u.get(i)].push(s[i]);
+        }
+        for(int i = 0;i < s.size();++i)
+        {
+            ans += h[u.get(i)].top();
+            h[u.get(i)].pop();
+        }
+        return ans;
+    }
+};
