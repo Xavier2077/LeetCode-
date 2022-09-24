@@ -1,0 +1,44 @@
+class Solution {
+public:
+    class unionset
+    {
+    public:
+        int* father;
+        int n;
+        unionset(int n)
+        {
+            father = new int[n + 1];
+            this->n = n;
+            for(int i = 0;i < n;++i)
+            {
+                father[i] = i;
+            }
+        }
+        int get(int x)
+        {
+            return father[x] = (father[x] == x ? x : get(father[x]));
+        }
+        void merge(int a, int b)
+        {
+            father[get(a)] = get(b);
+            return;
+        }
+    };
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        unionset u(n);
+        for(int i = 0;i < n;++i)
+        {
+            for(int j = i;j < n;++j)
+            {
+                if(isConnected[i][j]) u.merge(i, j);
+            }
+        }
+        int ans = 0;
+        for(int i = 0;i < n;++i)
+        {
+            if(u.get(i) == i) ++ans;
+        }
+        return ans;
+    }
+};
