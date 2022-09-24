@@ -1,0 +1,50 @@
+class Solution {
+public:
+    class UnionSet
+    {
+    public:
+        int n;
+        int* fa;
+        int* cnt;//记录集合个数
+        UnionSet(int n)
+        {
+            this->n = n;
+            fa = new int[n + 1];
+            cnt = new int[n + 1];
+            for(int i = 0;i < n;++i)
+            {
+                fa[i] = i;
+                cnt[i] = 1;
+            }
+        }
+        int get(int x)
+        {
+            return fa[x] = (fa[x] == x ? x : get(fa[x]));
+        }
+        void merge(int a, int b)
+        {
+            if(get(a) == get(b)) return;
+            cnt[get(b)] += cnt[get(a)];
+            fa[get(a)] = get(b);
+            return;
+        }
+    };
+    int longestConsecutive(vector<int>& nums) {
+        unordered_map<int, int> ind;
+        UnionSet u(nums.size());
+        for(int i = 0;i < nums.size();++i)
+        {
+            int x = nums[i];
+            if(ind.find(x) != ind.end()) continue;
+            if(ind.find(x -1) != ind.end()) u.merge(i, ind[x - 1]);
+            if(ind.find(x + 1) != ind.end()) u.merge(i, ind[x + 1]);
+            ind[x] = i;
+        }
+        int ans  = 0;
+        for(int i  = 0;i < nums.size();++i)
+        {
+            if(u.get(i) == i && u.cnt[i] > ans) ans = u.cnt[i];
+        }
+        return ans;
+    }
+};
